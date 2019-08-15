@@ -2,6 +2,171 @@
 #include <assert.h>
 
 template <class Integer>
+inline constexpr bool
+operator!=(const Rational<Integer>& lhs,
+	       const Rational<Integer>& rhs) noexcept
+{
+	return !(lhs == rhs);
+}
+
+template <class Integer>
+constexpr bool
+operator==(const Rational<Integer>& lhs,
+	       const Rational<Integer>& rhs) noexcept
+{
+	return lhs.getNumerator() == rhs.getNumerator() &&
+		   lhs.getDenominator() == rhs.getDenominator();
+}
+
+template <class Integer>
+inline constexpr bool
+operator>(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs) noexcept
+{
+	return rhs < lhs;
+}
+
+template <class Integer>
+inline constexpr bool
+operator<=(const Rational<Integer>& lhs,
+	       const Rational<Integer>& rhs) noexcept
+{
+	return !(rhs < lhs);
+}
+
+template <class Integer>
+inline constexpr bool
+operator>=(const Rational<Integer>& lhs,
+	       const Rational<Integer>& rhs) noexcept
+{
+	return !(lhs < rhs);
+}
+
+template <class Integer>
+constexpr bool
+operator<(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs) noexcept
+{
+	return (lhs.getNumerator() * rhs.getDenominator()) <
+		   (lhs.getDenominator() * rhs.getNumerator());
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+operator+(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs) noexcept
+{
+	auto result = lhs;
+	result += rhs;
+
+	return result;
+}
+
+template <class Integer>
+constexpr Rational<Integer>&
+Rational<Integer>::operator+=(const Rational& rhs) noexcept
+{
+	auto numerator = this->numerator * rhs.denominator +
+		             this->denominator * rhs.numerator;
+	auto denominator = this->denominator * rhs.denominator;
+	*this = Rational{ numerator, denominator };
+
+	return *this;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+operator-(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs) noexcept
+{
+	auto result = lhs;
+	result -= rhs;
+
+	return result;
+}
+
+template <class Integer>
+inline constexpr Rational<Integer>&
+Rational<Integer>::operator-=(const Rational& rhs) noexcept
+{
+	*this += -rhs;
+
+	return *this;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+operator-(const Rational<Integer>& r) noexcept
+{
+	return Rational<Integer>{ Integer{ -1 } } * r;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+operator*(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs) noexcept
+{
+	auto result = lhs;
+	result *= rhs;
+
+	return result;
+}
+
+template <class Integer>
+constexpr Rational<Integer>&
+Rational<Integer>::operator*=(const Rational& rhs) noexcept
+{
+	auto numerator = this->numerator * rhs.numerator;
+	auto denominator = this->denominator * rhs.denominator;
+	
+	*this = Rational{ numerator, denominator };
+
+	return *this;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+operator/(const Rational<Integer>& lhs,
+	      const Rational<Integer>& rhs)
+{
+	auto result = lhs;
+	result /= rhs;
+
+	return result;
+}
+
+template <class Integer>
+constexpr Rational<Integer>&
+Rational<Integer>::operator/=(const Rational& rhs)
+{
+	if (!isZero(rhs.numerator))
+	{
+		*this *= reciprocalOf(rhs);
+
+		return *this;
+	}
+	else
+	{
+		throw std::logic_error{ "Zero division!" };
+	}
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+reciprocalOf(const Rational<Integer>& r)
+{
+	if (r != Rational<Integer>{ Integer{ 0 } })
+	{
+		return Rational<Integer>{ r.getDenominator(),
+						          r.getNumerator() };
+	}
+	else
+	{
+		throw std::logic_error{ "Zero has no reciprocal!" };
+	}
+}
+
+template <class Integer>
 inline constexpr Rational<Integer>::Rational() noexcept :
 	numerator{ 0 },
 	denominator{ 1 }
