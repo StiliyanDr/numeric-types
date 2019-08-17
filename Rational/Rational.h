@@ -20,6 +20,8 @@ public:
 	constexpr Rational& operator/=(const Rational& rhs);
 
 	explicit constexpr operator double() const noexcept;
+	constexpr operator bool() const noexcept;
+	constexpr bool operator!() const noexcept;
 
 	constexpr Integer getNumerator() const noexcept;
 	constexpr Integer getDenominator() const noexcept;

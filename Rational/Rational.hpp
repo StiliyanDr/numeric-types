@@ -240,6 +240,20 @@ Rational<Integer>::moveSignInNumerator() noexcept
 }
 
 template <class Integer>
+inline constexpr bool
+Rational<Integer>::operator!() const noexcept
+{
+	return !static_cast<bool>(*this);
+}
+
+template <class Integer>
+inline constexpr
+Rational<Integer>::operator bool() const noexcept
+{
+	return !isZero(numerator);
+}
+
+template <class Integer>
 inline constexpr
 Rational<Integer>::operator double() const noexcept
 {
