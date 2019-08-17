@@ -76,6 +76,25 @@ Rational<Integer>::operator+=(const Rational& rhs) noexcept
 
 template <class Integer>
 constexpr const Rational<Integer>
+Rational<Integer>::operator++(int) noexcept
+{
+	auto result = *this;
+	++(*this);
+
+	return result;
+}
+
+template <class Integer>
+constexpr Rational<Integer>&
+Rational<Integer>::operator++() noexcept
+{
+	*this += Rational{ Integer{ 1 } };
+
+	return *this;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
 operator-(const Rational<Integer>& lhs,
 	      const Rational<Integer>& rhs) noexcept
 {
@@ -90,6 +109,25 @@ inline constexpr Rational<Integer>&
 Rational<Integer>::operator-=(const Rational& rhs) noexcept
 {
 	*this += -rhs;
+
+	return *this;
+}
+
+template <class Integer>
+constexpr const Rational<Integer>
+Rational<Integer>::operator--(int) noexcept
+{
+	auto result = *this;
+	--(*this);
+
+	return result;
+}
+
+template <class Integer>
+constexpr Rational<Integer>&
+Rational<Integer>::operator--() noexcept
+{
+	*this -= Rational{ Integer{ 1 } };
 
 	return *this;
 }
