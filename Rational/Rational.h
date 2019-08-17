@@ -19,6 +19,8 @@ public:
 	constexpr Rational& operator*=(const Rational& rhs) noexcept;
 	constexpr Rational& operator/=(const Rational& rhs);
 
+	explicit constexpr operator double() const noexcept;
+
 	constexpr Integer getNumerator() const noexcept;
 	constexpr Integer getDenominator() const noexcept;
 
