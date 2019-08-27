@@ -133,6 +133,60 @@ TEST_CASE("Rational conversions",
     }
 }
 
+TEST_CASE("Rational equality tests compare reduced rationals",
+    "[equality]")
+{
+    REQUIRE(Rational<>{ 1, 2 } == Rational<>{ 1, 2 });
+    REQUIRE(Rational<>{ 2, 4 } == Rational<>{ 1, 2 });
+
+    REQUIRE(Rational<>{ 1, 2 } != Rational<>{ 1, 3 });
+    REQUIRE(Rational<>{ 2, 4 } != Rational<>{ 2, 6 });
+}
+
+TEST_CASE("Rational comparisons",
+          "[comparison]")
+{
+    auto minusOneThird = Rational<>{ -1, 3 };
+    auto zero = Rational<>{ 0 };
+    auto oneThird = Rational<>{ 1, 3 };
+
+    SECTION("operator<")
+    {
+        REQUIRE(minusOneThird < zero);
+        REQUIRE(minusOneThird < oneThird);
+        REQUIRE(zero < oneThird);
+        REQUIRE_FALSE(oneThird < oneThird);
+        REQUIRE_FALSE(oneThird < minusOneThird);
+        REQUIRE_FALSE(zero < minusOneThird);
+    }
+
+    SECTION("operator<=")
+    {
+        REQUIRE(oneThird <= oneThird);
+        REQUIRE(zero <= oneThird);
+        REQUIRE(minusOneThird <= oneThird);
+        REQUIRE_FALSE(oneThird <= zero);
+    }
+
+    SECTION("operator>")
+    {
+        REQUIRE(zero > minusOneThird);
+        REQUIRE(oneThird > minusOneThird);
+        REQUIRE(oneThird > zero);
+        REQUIRE_FALSE(oneThird > oneThird);
+        REQUIRE_FALSE(minusOneThird > zero);
+    }
+
+    SECTION("operator>=")
+    {
+        REQUIRE(oneThird >= oneThird);
+        REQUIRE(oneThird >= zero);
+        REQUIRE(zero >= minusOneThird);
+        REQUIRE(oneThird >= minusOneThird);
+        REQUIRE_FALSE(minusOneThird >= oneThird);
+    }
+}
+
 TEST_CASE("Rational increment and decrement",
           "[increment], [decrement]")
 {
