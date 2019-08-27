@@ -174,3 +174,33 @@ TEST_CASE("Rational increment and decrement",
         }
     }
 }
+
+TEST_CASE("Rational negation and reciprocal",
+          "[negation], [reciprocal]")
+{
+    const auto zero = Rational<>{ 0 };
+
+    SECTION("Negation keeps the sign in the numerator")
+    {
+        auto r = Rational<>{ 2, 3 };
+
+        REQUIRE(-r == Rational<>{ -2, 3 });
+    }
+
+    SECTION("Negation of zero is zero")
+    {
+        REQUIRE(-zero == zero);
+    }
+
+    SECTION("reciprocalOf keeps the sign in the numerator")
+    {
+        auto r = Rational<>{ -2, 3 };
+        
+        REQUIRE(reciprocalOf(r) == Rational<>{ -3, 2 });
+    }
+
+    SECTION("reciprocalOf zero throws exception")
+    {
+        REQUIRE_THROWS_AS(reciprocalOf(zero), std::logic_error);
+    }
+}
