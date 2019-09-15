@@ -9,8 +9,8 @@ TEST_CASE("Rational constructors",
     {
         auto r = Rational<>{};
 
-        REQUIRE(r.getNumerator() == 0);
-        REQUIRE(r.getDenominator() == 1);
+        CHECK(r.getNumerator() == 0);
+        CHECK(r.getDenominator() == 1);
     }
 
     SECTION("Single argument constructor creates an integer")
@@ -18,8 +18,8 @@ TEST_CASE("Rational constructors",
         auto integer = -10;
         auto r = Rational<>{ integer };
 
-        REQUIRE(r.getNumerator() == integer);
-        REQUIRE(r.getDenominator() == 1);
+        CHECK(r.getNumerator() == integer);
+        CHECK(r.getDenominator() == 1);
     }
 
     SECTION("Constructor with numerator and denominator")
@@ -28,24 +28,24 @@ TEST_CASE("Rational constructors",
         {
             auto r = Rational<>{ 2, 4 };
             
-            REQUIRE(r.getNumerator() == 1);
-            REQUIRE(r.getDenominator() == 2);
+            CHECK(r.getNumerator() == 1);
+            CHECK(r.getDenominator() == 2);
         }
 
         SECTION("Keeps the sign in the numerator")
         {
             auto r = Rational<>{ 1, -3 };
 
-            REQUIRE(r.getNumerator() == -1);
-            REQUIRE(r.getDenominator() == 3);
+            CHECK(r.getNumerator() == -1);
+            CHECK(r.getDenominator() == 3);
         }
 
         SECTION("Creates a positive rational from two negative integers")
         {
             auto r = Rational<>{ -1, -4 };
 
-            REQUIRE(r.getNumerator() == 1);
-            REQUIRE(r.getDenominator() == 4);
+            CHECK(r.getNumerator() == 1);
+            CHECK(r.getDenominator() == 4);
         }
 
         SECTION("Throws exception when denominator is zero")
@@ -65,16 +65,16 @@ TEST_CASE("Rational copy and move operations",
     {
         auto lhs = rhs;
 
-        REQUIRE(lhs.getNumerator() == rhs.getNumerator());
-        REQUIRE(lhs.getDenominator() == rhs.getDenominator());
+        CHECK(lhs.getNumerator() == rhs.getNumerator());
+        CHECK(lhs.getDenominator() == rhs.getDenominator());
     }
 
     SECTION("Move constructor")
     {
         auto lhs = std::move(rhs);
 
-        REQUIRE(lhs.getNumerator() == rhs.getNumerator());
-        REQUIRE(lhs.getDenominator() == rhs.getDenominator());
+        CHECK(lhs.getNumerator() == rhs.getNumerator());
+        CHECK(lhs.getDenominator() == rhs.getDenominator());
     }
 
     SECTION("Assignment")
@@ -85,16 +85,16 @@ TEST_CASE("Rational copy and move operations",
         {
             lhs = rhs;
 
-            REQUIRE(lhs.getNumerator() == rhs.getNumerator());
-            REQUIRE(lhs.getDenominator() == rhs.getDenominator());
+            CHECK(lhs.getNumerator() == rhs.getNumerator());
+            CHECK(lhs.getDenominator() == rhs.getDenominator());
         }
 
         SECTION("Move assignment")
         {
             lhs = std::move(rhs);
 
-            REQUIRE(lhs.getNumerator() == rhs.getNumerator());
-            REQUIRE(lhs.getDenominator() == rhs.getDenominator());
+            CHECK(lhs.getNumerator() == rhs.getNumerator());
+            CHECK(lhs.getDenominator() == rhs.getDenominator());
         }
     }
 }
@@ -109,14 +109,14 @@ TEST_CASE("Rational conversions",
 
         SECTION("Converts zero to false")
         {
-            REQUIRE_FALSE(zero);
-            REQUIRE(!zero);
+            CHECK_FALSE(zero);
+            CHECK(!zero);
         }
 
         SECTION("Converts nonzero to true")
         {
-            REQUIRE(nonzero);
-            REQUIRE_FALSE(!nonzero);
+            CHECK(nonzero);
+            CHECK_FALSE(!nonzero);
         }
     }
 
@@ -136,11 +136,12 @@ TEST_CASE("Rational conversions",
 TEST_CASE("Rational equality tests compare reduced rationals",
     "[equality]")
 {
-    REQUIRE(Rational<>{ 1, 2 } == Rational<>{ 1, 2 });
-    REQUIRE(Rational<>{ 2, 4 } == Rational<>{ 1, 2 });
+    CHECK(Rational<>{ 1, 2 } == Rational<>{ 1, 2 });
+    CHECK(Rational<>{ 2, 4 } == Rational<>{ 1, 2 });
 
-    REQUIRE(Rational<>{ 1, 2 } != Rational<>{ 1, 3 });
-    REQUIRE(Rational<>{ 2, 4 } != Rational<>{ 2, 6 });
+    CHECK(Rational<>{ 1, 2 } != Rational<>{ 1, 3 });
+    CHECK(Rational<>{ 1, 2 } != Rational<>{ -1, 2 });
+    CHECK(Rational<>{ 2, 4 } != Rational<>{ 2, 6 });
 }
 
 TEST_CASE("Rational comparisons",
@@ -152,38 +153,38 @@ TEST_CASE("Rational comparisons",
 
     SECTION("operator<")
     {
-        REQUIRE(minusOneThird < zero);
-        REQUIRE(minusOneThird < oneThird);
-        REQUIRE(zero < oneThird);
-        REQUIRE_FALSE(oneThird < oneThird);
-        REQUIRE_FALSE(oneThird < minusOneThird);
-        REQUIRE_FALSE(zero < minusOneThird);
+        CHECK(minusOneThird < zero);
+        CHECK(minusOneThird < oneThird);
+        CHECK(zero < oneThird);
+        CHECK_FALSE(oneThird < oneThird);
+        CHECK_FALSE(oneThird < minusOneThird);
+        CHECK_FALSE(zero < minusOneThird);
     }
 
     SECTION("operator<=")
     {
-        REQUIRE(oneThird <= oneThird);
-        REQUIRE(zero <= oneThird);
-        REQUIRE(minusOneThird <= oneThird);
-        REQUIRE_FALSE(oneThird <= zero);
+        CHECK(oneThird <= oneThird);
+        CHECK(zero <= oneThird);
+        CHECK(minusOneThird <= oneThird);
+        CHECK_FALSE(oneThird <= zero);
     }
 
     SECTION("operator>")
     {
-        REQUIRE(zero > minusOneThird);
-        REQUIRE(oneThird > minusOneThird);
-        REQUIRE(oneThird > zero);
-        REQUIRE_FALSE(oneThird > oneThird);
-        REQUIRE_FALSE(minusOneThird > zero);
+        CHECK(zero > minusOneThird);
+        CHECK(oneThird > minusOneThird);
+        CHECK(oneThird > zero);
+        CHECK_FALSE(oneThird > oneThird);
+        CHECK_FALSE(minusOneThird > zero);
     }
 
     SECTION("operator>=")
     {
-        REQUIRE(oneThird >= oneThird);
-        REQUIRE(oneThird >= zero);
-        REQUIRE(zero >= minusOneThird);
-        REQUIRE(oneThird >= minusOneThird);
-        REQUIRE_FALSE(minusOneThird >= oneThird);
+        CHECK(oneThird >= oneThird);
+        CHECK(oneThird >= zero);
+        CHECK(zero >= minusOneThird);
+        CHECK(oneThird >= minusOneThird);
+        CHECK_FALSE(minusOneThird >= oneThird);
     }
 }
 
@@ -232,8 +233,6 @@ TEST_CASE("Rational increment and decrement",
 TEST_CASE("Rational negation and reciprocal",
           "[negation], [reciprocal]")
 {
-    const auto zero = Rational<>{ 0 };
-
     SECTION("Negation keeps the sign in the numerator")
     {
         auto r = Rational<>{ 2, 3 };
@@ -243,6 +242,8 @@ TEST_CASE("Rational negation and reciprocal",
 
     SECTION("Negation of zero is zero")
     {
+        const auto zero = Rational<>{ 0 };
+
         REQUIRE(-zero == zero);
     }
 
@@ -255,7 +256,15 @@ TEST_CASE("Rational negation and reciprocal",
 
     SECTION("reciprocalOf zero throws exception")
     {
-        REQUIRE_THROWS_AS(reciprocalOf(zero), std::logic_error);
+        REQUIRE_THROWS_AS(reciprocalOf(Rational<>{ 0 }),
+                          std::logic_error);
+    }
+
+    SECTION("Reciprocal of one is one")
+    {
+        const auto one = Rational<>{ 1 };
+
+        REQUIRE(reciprocalOf(one) == one);
     }
 }
 
